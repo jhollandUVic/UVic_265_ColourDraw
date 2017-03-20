@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Assign_03_Notes</title>
+	<meta name="generator" content="BBEdit 11.6" />
+	<style type="text/css">
+
+		body	{	color: navy; 
+						background-color: gray;
+					 	font-family: Helvetica, Univers, sans-serif;
+					}
+		code {color: #006600; font-family: "Lucida Console", Courier, "Andale Mono", monospace}
+		h1 {color: navy; font-style: oblique; text-shadow: 2px 2px 2px lightgray}
+		h2 {color: navy; font-style: italic; text-shadow: 1px 1px 1px lightgray}
+		h3 {color: navy; font-style: normal; text-shadow: 1px 1px 1px lightgray}
+		h4 {color: navy; font-style: normal; text-shadow: 1px 1px 1px lightgray}
+
+		a:link {color: mediumblue; text-decoration: none}
+		a:visited {color: purple; text-decoration: none}
+		a:hover {color: red; text-decoration: underline}
+		a:active {color: black; text-decoration: none}
+
+	 dl {
+			border: 3px solid lightgray;
+			padding: 0.5em;
+		}
+		dt {
+			font-weight: bold;
+			text-decoration: underline;
+		}
+		dd {
+			margin: 0;
+			padding: 0 0 0.5em 0;
+		}
+
+	pre, code, tt {
+		font-size: 16px;
+		font-family: Consolas, "Liberation Mono", Courier, monospace;
+	}
+
+	code, tt {
+		margin: 0 0px;
+		padding: 0px 0px;
+		white-space: wrap;
+		border: 1px solid #eaeaea;
+		background-color: #f8f8f8;
+		border-radius: 3px;
+	}
+
+	pre>code {
+		margin: 0;
+		padding: 0;
+		white-space: pre;
+		border: none;
+		background: transparent;
+	}
+
+	pre {
+		background-color: #f8f8f8;
+		border: 1px solid #ccc;
+		font-size: 16px;
+		line-height: 20px;
+		overflow: auto;
+		padding: 6px 10px;
+		border-radius: 3px;
+	}
+
+	pre code, pre tt {
+		background-color: transparent;
+		border: none;
+	}
+
+	table.main {	width: 600px;
+					padding: 1px;
+					spacing: 2px;
+					border: 2px dotted lightgray;
+					border-radius: 15px;
+					border-spacing: 8px;
+					margin-right: auto;
+					margin-left: auto;
+				}
+	table.data	{
+	background-color: lightgray;
+		width: 600px;
+					padding: 1px;
+					spacing: 2px;
+
+					margin-right: auto;
+					margin-left: auto;
+							}
+		th {background-color: white; color: navy}
+		tr.header {background-color: white}
+
+		td {	font_weight: bold;
+					color: navy;
+					background-color: white;
+					padding: 0px 10px;
+					border-radius: 10px
+				}
+		td.picture {background-color: white}
+
+		img {	display: block;
+					margin-right: auto;
+					margin-left: auto;
+					background-color: white; padding: 3px; border: 1px dotted navy;
+				}
+</style>
+
+</head>
+<body>
+<table class="main">
+<tr>
+<td>
+
+
+
+
+<h1>265Draw: Sierpinski Carpet</h1>
+
+<hr />
+
+<h2>Drawing</h2>
+
+<ul>
+<li><p>Had to re-think drawing process based on needing to use <code>lines_to_svg.py</code>. Now no use of rects so can’t use fill to colour them.</p></li>
+<li><p>Second attempt at a recursive drawing:</p></li>
+</ul>
+
+<p><img src="image/carpet4.svg" alt="Carpet With Four Levels of Recursion" title="Sierpinski Carpet With Four Levels of Recursion" /></p>
+
+<h2>Code:</h2>
+
+<ul>
+<li><p><code>generate_carpet_line.py</code></p>
+
+<pre><code>import sys
+import math
+import Line_Point
+
+
+'''
+purpose
+'''
+purpose
+    write to stdout a Sierpinski Carpet in a 500 x 500 canvas 
+    with arbitrary recursion level r
+preconditions
+    r is a positive integer
+reference
+    See &lt;http://lodev.org/cgtutor/sierpinski.html&gt;
+'''
+#
+def drawRect(x1, y1, x2, y2):
+    # Draw boundaries of square
+    point0 = Line_Point.Point(x1, y1)
+    point1 = Line_Point.Point(x2,y1)
+    line = Line_Point.Line(point0, point1)
+    print 'line', line
+    point0 = Line_Point.Point(x2,y1)
+    point1 = Line_Point.Point(x2, y2)
+    line = Line_Point.Line(point0, point1)
+    print 'line', line
+    point0 = Line_Point.Point(x2, y2)
+    point1 = Line_Point.Point(x1, y2)
+    line = Line_Point.Line(point0, point1)
+    print 'line', line
+    point0 = Line_Point.Point(x1, y2)
+    point1 = Line_Point.Point(x1, y1)
+    line = Line_Point.Line(point0, point1)
+    print 'line', line
+    # Draw cross on square
+    point0 = Line_Point.Point(x1, y2)
+    point1 = Line_Point.Point(x2, y1)
+    line = Line_Point.Line(point0, point1)
+    print 'line', line
+    point0 = Line_Point.Point(x1, y1)
+    point1 = Line_Point.Point(x2, y2)
+    line = Line_Point.Line(point0, point1)
+    print 'line', line
+#   
+def drawCarpet(this_step, x1, y1, x2, y2):
+    # Determine new rectangle 1/3rd the size in center of given coordinates
+    r_x1 = (2 * x1 + x2)/3.0
+    r_y1 = (2 * y1 + y2)/3.0
+    r_x2 = (x1 + 2 * x2)/3.0
+    r_y2 = (y1 + 2 * y2)/3.0
+    drawRect(r_x1, r_y1, r_x2, r_y2)
+    #
+    # Call drawCarpet another 8 times, once for each of the rectangles
+    # around the one that was just drawn.
+    if this_step &gt; 0:
+        next_step = this_step - 1
+        drawCarpet(next_step,   x1,   y1, r_x1, r_y1)
+        drawCarpet(next_step, r_x1,   y1, r_x2, r_y1)
+        drawCarpet(next_step, r_x2,   y1,   x2, r_y1)
+        drawCarpet(next_step,   x1, r_y1, r_x1, r_y2)
+        drawCarpet(next_step, r_x2, r_y1,   x2, r_y2)
+        drawCarpet(next_step,   x1, r_y2, r_x1,   y2)
+        drawCarpet(next_step, r_x1, r_y2, r_x2,   y2)
+        drawCarpet(next_step, r_x2, r_y2,   x2,   y2)
+#
+# ********** process the command line arguments
+if len(sys.argv) != 2:
+    print &gt;&gt; sys.stderr, 'Syntax: ' + sys.argv[0] + 'recursion_steps'
+    sys.exit(1)
+try:
+    recursion_steps = int(sys.argv[1])
+except ValueError:
+    print &gt;&gt; sys.stderr, 'Value Error: ' + sys.argv[0] + 'recursion_steps'
+    sys.exit(2)
+if recursion_steps &gt;= 9:
+    print &gt;&gt; sys.stderr, 'Values: ' + sys.argv[0] + 'recursion_steps'
+    sys.exit(3)
+#
+drawCarpet(recursion_steps,-250, 250, 250, -250)
+</code></pre></li>
+</ul>
+
+<h2>Usage</h2>
+
+<ul>
+<li><code>=&gt; python generate_carpet_line.py 4 &gt; carpet.txt</code>
+<ul>
+<li><code>4</code> is the number of recursions. Any higher than 4 and the refresh on the screen is very slow.</li>
+<li>Eliminated canvas size since we are fixed at 500 x 500.</li>
+</ul></li>
+<li><code>=&gt; python lines_to_svg.py &lt; carpet.txt &gt; carpet.svg</code>
+<ul>
+<li>Build svg file.</li>
+</ul></li>
+</ul>
+
+<h2>Bugs</h2>
+
+<ul>
+<li>No colour so not exciting. Could add colour contrast or allow specification of colour themes when colour is available.</li>
+<li>Slow screen drawing when recursion level higher than 4.</li>
+<li>Clunky code.</li>
+<li>Artifacts in drawing because canvas dimensions are not multiples of 9.</li>
+<li><code>lines_to_svg.py</code> hangs occasionally, resulting in an empty or incomplete <code>carpet.svg</code> file.</li>
+<li>Others to come.</li>
+</ul>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://lodev.org/cgtutor/sierpinski.html">Sierpinski Fractals</a></li>
+<li><a href="https://www.w3schools.com/graphics/svg_intro.asp">SVG Tutorial</a></li>
+</ul>
+
+<h2>Document Notes</h2>
+
+<ul>
+<li>This document built in <a href="http://www.barebones.com/products/bbedit/">BBEdit</a> in <a href="http://daringfireball.net/projects/markdown/">Markdown</a> format, converted to HTML with the <a href="http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip">Markdown Text-to-HTML filter</a>, then inserted into a CSS wrapper.</li>
+</ul>
+
+<hr />
+
+<p>Last Update: 2017 March 19 at 08:50:57 PDT</p>
+
+
+
+
+
+
+
+
+
+
+</td>
+</tr>
+</table>
+</body>
+</html>
+
