@@ -16,22 +16,24 @@ import Line_Point
 
 '''
 purpose
-	write to stdout a series of tiles consisting of 8 copies of the shape in lines,
-	translated horizontally by delta_y, vertically by delta_y, and rotated by rotation.
+	write to stdout a set of coloured tiles consisting of 8 copies of the
+	original shape in lines, translated horizontally by delta_x,
+	vertically by delta_y, rotated by rotation, and scaled to fit in space.
 preconditions
-	lines is a list of Line objects
+	lines is a list with a sublist for each line containing the
+	four line coordinates plus a colour
 	n > 0
 '''
 def draw_tile(lines, delta_x, delta_y, rotation, scale):
 	new_lines = copy.deepcopy(lines)
 
 	for line in new_lines:
-		# line is a list with the four coordinates plus a colour
+		# line is a list with the four line coordinates plus a colour
 		point0 = Line_Point.Point(float(line[0]), float(line[1]))
 		point1 = Line_Point.Point(float(line[2]), float(line[3]))
+		line_object = Line_Point.Line(point0, point1)
 		colour = str(line[4])
 		
-		line_object = Line_Point.Line(point0, point1)
 		# Apply transformations
 		line_object.rotate(rotation)
 		line_object.scale(scale)
@@ -41,7 +43,8 @@ def draw_tile(lines, delta_x, delta_y, rotation, scale):
 
 '''
 purpose
-	convert the lines in stdin to a list of Line objects
+	convert the lines in stdin to a list containing, for each line,
+	a sublist of line coordinates plus colour
 	return the list
 preconditions
 	file_object is a reference to a readable file containing legal lines
@@ -82,10 +85,10 @@ L = load_line_file(sys.stdin)
 # First tile is in middle, ie. original tile
 # Second Tile is above the first
 # The succeeding tiles are positioned counterclockwise around original
-# delta-x and delta-y relative to origin, center of canvas.
+# delta-x and delta-y relative to origin: center of canvas.
 tile_position = [
 #	delta-x, delta-y, rotation, scale
-#	Angle and Scale setting for "Up, down, Across" rotated pattern
+#	Angle and Scale setting for "Up, Down, Across" rotated pattern
 	[+0.0,		+0.0,	0.0, 1.0],
 	[0.0,		+166.0,	angle, scale],
 	[-166.0,	+166.0,	0.0, 1.0],
@@ -96,7 +99,7 @@ tile_position = [
 	[+166.0,	0.0,	angle, scale],
 	[+166.0,	+166.0,	0.0, 1.0],
 #
-#	All Rotated
+#	All Rotated Except for Center
 # 	[+0.0,		+0.0,	0.0, 1.0],
 # 	[0.0,		+166.0,	angle, scale],
 # 	[-166.0,	+166.0,	angle, scale],
@@ -107,7 +110,7 @@ tile_position = [
 # 	[+166.0,	0.0,	angle, scale],
 # 	[+166.0,	+166.0,	angle, scale],
 #
-#	Diagonal Rotated
+#	Diagonally Rotated Except for Center
 # 	[+0.0,		+0.0,	0.0, 1.0],
 # 	[0.0,		+166.0,	0.0, 1.0],
 # 	[-166.0,	+166.0,	angle, scale],
