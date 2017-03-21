@@ -89,6 +89,8 @@ def load_line_file(file_object):
 	
 
 # ***** apply rotate, scale, translate
+# ***** Mod: 2017 Mar 21
+# *****      Add colour set from L[5] to be printed with line
 def process_lines_file(file_object, options):
 	for line in file_object:
 		# convert L to a Line object
