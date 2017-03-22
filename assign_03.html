@@ -123,82 +123,89 @@
 <h2>Drawing</h2>
 
 <ul>
-<li><p>Had to re-think drawing process based on needing to use <code>lines_to_svg.py</code>. Now no use of rects so can’t use fill to colour them.</p></li>
-<li><p>Second attempt at a recursive drawing:</p></li>
+<li>Recursion hard-coded at moment but could be controlled by user input</li>
+<li>Tiling and rotation also hard-coded.</li>
+<li><p>Colour coming.</p></li>
+<li><p>Sierpinski Carpet With Four Levels of Recursion:</p></li>
 </ul>
 
-<p><img src="image/carpet4.svg" alt="Carpet With Four Levels of Recursion" title="Sierpinski Carpet With Four Levels of Recursion" /></p>
+<p><img src="image/carpet4.svg" alt="Carpet With Four Levels of Recursion" title="28089 Lines" /></p>
+
+<ul>
+<li>Tiled Sierpinski Carpets With Two Levels of Recursion:</li>
+</ul>
+
+<p><img src="image/carpet_2ST.svg" alt="Tiled Carpets With Two Levels of Recursion" title="3945 Lines" /></p>
 
 <h2>Code:</h2>
 
 <ul>
-<li><p><code>generate_carpet_line.py</code></p>
+<li><p><code>generate_carpet.py</code></p>
 
 <pre><code>import sys
 import math
 import Line_Point
-
-
+#
 '''
 purpose
-'''
-purpose
-    write to stdout a Sierpinski Carpet in a 500 x 500 canvas 
+    write to stdout a Sierpinski Carpet in a 500 x 500 canvas
     with arbitrary recursion level r
 preconditions
     r is a positive integer
 reference
     See &lt;http://lodev.org/cgtutor/sierpinski.html&gt;
 '''
+StepColour = ['Red', 'Blue', 'Green', 'Red', 'Orange', 'Lime', 'Maroon']
 #
-def drawRect(x1, y1, x2, y2):
+def drawRect(x1, y1, x2, y2, colour):
     # Draw boundaries of square
     point0 = Line_Point.Point(x1, y1)
     point1 = Line_Point.Point(x2,y1)
     line = Line_Point.Line(point0, point1)
-    print 'line', line
+    print 'line', line, colour
     point0 = Line_Point.Point(x2,y1)
     point1 = Line_Point.Point(x2, y2)
     line = Line_Point.Line(point0, point1)
-    print 'line', line
+    print 'line', line, colour
     point0 = Line_Point.Point(x2, y2)
     point1 = Line_Point.Point(x1, y2)
     line = Line_Point.Line(point0, point1)
-    print 'line', line
+    print 'line', line, colour
     point0 = Line_Point.Point(x1, y2)
     point1 = Line_Point.Point(x1, y1)
     line = Line_Point.Line(point0, point1)
-    print 'line', line
+    print 'line', line, colour
     # Draw cross on square
     point0 = Line_Point.Point(x1, y2)
     point1 = Line_Point.Point(x2, y1)
     line = Line_Point.Line(point0, point1)
-    print 'line', line
+    print 'line', line, colour
     point0 = Line_Point.Point(x1, y1)
     point1 = Line_Point.Point(x2, y2)
     line = Line_Point.Line(point0, point1)
-    print 'line', line
-#   
-def drawCarpet(this_step, x1, y1, x2, y2):
+    print 'line', line, colour
+#
+def drawCarpet(this_step, x1, y1, x2, y2, colour):
     # Determine new rectangle 1/3rd the size in center of given coordinates
     r_x1 = (2 * x1 + x2)/3.0
     r_y1 = (2 * y1 + y2)/3.0
     r_x2 = (x1 + 2 * x2)/3.0
     r_y2 = (y1 + 2 * y2)/3.0
-    drawRect(r_x1, r_y1, r_x2, r_y2)
-    #
+    drawRect(r_x1, r_y1, r_x2, r_y2, colour)
+#
     # Call drawCarpet another 8 times, once for each of the rectangles
     # around the one that was just drawn.
     if this_step &gt; 0:
         next_step = this_step - 1
-        drawCarpet(next_step,   x1,   y1, r_x1, r_y1)
-        drawCarpet(next_step, r_x1,   y1, r_x2, r_y1)
-        drawCarpet(next_step, r_x2,   y1,   x2, r_y1)
-        drawCarpet(next_step,   x1, r_y1, r_x1, r_y2)
-        drawCarpet(next_step, r_x2, r_y1,   x2, r_y2)
-        drawCarpet(next_step,   x1, r_y2, r_x1,   y2)
-        drawCarpet(next_step, r_x1, r_y2, r_x2,   y2)
-        drawCarpet(next_step, r_x2, r_y2,   x2,   y2)
+        colour = StepColour[next_step]
+        drawCarpet(next_step,   x1,   y1, r_x1, r_y1, colour)
+        drawCarpet(next_step, r_x1,   y1, r_x2, r_y1, colour)
+        drawCarpet(next_step, r_x2,   y1,   x2, r_y1, colour)
+        drawCarpet(next_step,   x1, r_y1, r_x1, r_y2, colour)
+        drawCarpet(next_step, r_x2, r_y1,   x2, r_y2, colour)
+        drawCarpet(next_step,   x1, r_y2, r_x1,   y2, colour)
+        drawCarpet(next_step, r_x1, r_y2, r_x2,   y2, colour)
+        drawCarpet(next_step, r_x2, r_y2,   x2,   y2, colour)
 #
 # ********** process the command line arguments
 if len(sys.argv) != 2:
@@ -212,23 +219,155 @@ except ValueError:
 if recursion_steps &gt;= 9:
     print &gt;&gt; sys.stderr, 'Values: ' + sys.argv[0] + 'recursion_steps'
     sys.exit(3)
+# Dimensions chosen so side of carpet divisible by 3.
+drawCarpet(recursion_steps,-249, 249, 249, -249, StepColour[recursion_steps])
+</code></pre></li>
+<li><p><code>transform_carpet.py</code></p>
+
+<pre><code>'''
+source
+    Modified from rings.py
+purpose
+    Read a file from stdin: a shape consisting of a list of lines.
+    Write to stdout a variety of copies of a Sierpinski Carpet.
+    Each carpet consists of the lines in the original carpet arranged
+    in tiles, possibly rotated, around the origin.
+preconditions
+    stdin contains a legal line file with colour
+'''
 #
-drawCarpet(recursion_steps,-250, 250, 250, -250)
+import sys
+import copy
+import math
+import Line_Point
+#
+'''
+purpose
+    write to stdout a set of coloured tiles consisting of 8 copies of the
+    original shape in lines, translated horizontally by delta_x,
+    vertically by delta_y, rotated by rotation, and scaled to fit in space.
+preconditions
+    lines is a list with a sublist for each line containing the
+    four line coordinates plus a colour
+    n &gt; 0
+'''
+def draw_tile(lines, delta_x, delta_y, rotation, scale):
+    new_lines = copy.deepcopy(lines)
+#
+    for line in new_lines:
+        # line is a list with the four line coordinates plus a colour
+        point0 = Line_Point.Point(float(line[0]), float(line[1]))
+        point1 = Line_Point.Point(float(line[2]), float(line[3]))
+        line_object = Line_Point.Line(point0, point1)
+        colour = str(line[4])
+#
+        # Apply transformations
+        line_object.rotate(rotation)
+        line_object.scale(scale)
+        line_object.translate(delta_x, delta_y)
+#       
+        print 'line', line_object, colour
+#
+'''
+purpose
+    convert the lines in stdin to a list containing, for each line,
+    a sublist of line coordinates plus colour
+    return the list
+preconditions
+    file_object is a reference to a readable file containing legal lines
+'''
+def load_line_file(file_object):
+    line_objects = [ ]
+    for line in file_object:
+        # Convert text line to a list with line coordinates and colour
+        line_object = line.split()
+        this_line_list = [ float(line_object[1]), float(line_object[2]), \
+        float(line_object[3]), float(line_object[4]), str(line_object[5]) ]
+        line_objects.append(this_line_list)
+#
+    return line_objects
+#
+# ***** process command line arguments
+#
+# if len(sys.argv) != 2:
+#   print &gt;&gt; sys.stderr, 'Syntax: ' + sys.argv[0] + ' number_of_rings'
+#   sys.exit(1)
+# try:
+#   number_of_rings = int(sys.argv[1])
+# except ValueError:
+#   print &gt;&gt; sys.stderr, 'Syntax: ' + sys.argv[0] + ' number_of_rings'
+#   sys.exit(2)
+# if number_of_rings &lt; 1 or number_of_rings &gt; 5:
+#   print &gt;&gt; sys.stderr, 'Syntax: ' + sys.argv[0] + ' number_of_rings'
+#   sys.exit(3)
+number_of_tiles = 9
+angle = math.pi/4
+#   Calc height of bounding box of rotated square then invert
+#   for amount to scale down to fit in space.
+scale = 1 / ( abs(math.sin(angle)) + abs(math.cos(angle)) )
+#
+L = load_line_file(sys.stdin)
+#
+# ***** generate the rings
+# First tile is in middle, ie. original tile
+# Second Tile is above the first
+# The succeeding tiles are positioned counterclockwise around original
+# delta-x and delta-y relative to origin: center of canvas.
+tile_position = [
+#   delta-x, delta-y, rotation, scale
+#   Angle and Scale setting for "Up, Down, Across" rotated pattern
+    [+0.0,      +0.0,   0.0, 1.0],
+    [0.0,       +166.0, angle, scale],
+    [-166.0,    +166.0, 0.0, 1.0],
+    [-166.0,    0.0,    angle, scale],
+    [-166.0,    -166.0, 0.0, 1.0],
+    [0.0,       -166.0, angle, scale],
+    [+166.0,    -166.0, 0.0, 1.0],
+    [+166.0,    0.0,    angle, scale],
+    [+166.0,    +166.0, 0.0, 1.0],
+#
+#   All Rotated Except for Center
+#   [+0.0,      +0.0,   0.0, 1.0],
+#   [0.0,       +166.0, angle, scale],
+#   [-166.0,    +166.0, angle, scale],
+#   [-166.0,    0.0,    angle, scale],
+#   [-166.0,    -166.0, angle, scale],
+#   [0.0,       -166.0, angle, scale],
+#   [+166.0,    -166.0, angle, scale],
+#   [+166.0,    0.0,    angle, scale],
+#   [+166.0,    +166.0, angle, scale],
+#
+#   Diagonally Rotated Except for Center
+#   [+0.0,      +0.0,   0.0, 1.0],
+#   [0.0,       +166.0, 0.0, 1.0],
+#   [-166.0,    +166.0, angle, scale],
+#   [-166.0,    0.0,    0.0, 1.0],
+#   [-166.0,    -166.0, angle, scale],
+#   [0.0,       -166.0, 0.0, 1.0],
+#   [+166.0,    -166.0, angle, scale],
+#   [+166.0,    0.0,    0.0, 1.0],
+#   [+166.0,    +166.0, angle, scale],
+]
+#   Draw a tile using tile_position which specifies delta-x,
+#   delta-y, scale factor, and angle of rotation.
+for i in range(number_of_tiles):
+    draw_tile(L, tile_position[i][0], tile_position[i][1], \
+        tile_position[i][2], tile_position[i][3])
 </code></pre></li>
 </ul>
 
 <h2>Usage</h2>
 
 <ul>
-<li><code>=&gt; python generate_carpet_line.py 4 &gt; carpet.txt</code>
-<ul>
-<li><code>4</code> is the number of recursions. Any higher than 4 and the refresh on the screen is very slow.</li>
-<li>Eliminated canvas size since we are fixed at 500 x 500.</li>
-</ul></li>
-<li><code>=&gt; python lines_to_svg.py &lt; carpet.txt &gt; carpet.svg</code>
-<ul>
-<li>Build svg file.</li>
-</ul></li>
+<li><p>Create a Recursive Sierpinski Carpet with 2 Levels</p>
+
+<p><code>python generate_carpet.py 2 &gt; carpet_2.txt</code></p></li>
+<li><p>Scale carpet lines file down to fit in central third of canvas</p>
+
+<p><code>python rotate_scale_translate.py -f .3333 &lt; carpet_2.txt &gt; carpet_2S.txt</code></p></li>
+<li><p>Build some tile patterns from scaled file</p>
+
+<p><code>python transform_carpet.py &lt; carpet_2S.txt &gt; carpet_2ST.txt</code></p></li>
 </ul>
 
 <h2>Bugs</h2>
@@ -237,9 +376,6 @@ drawCarpet(recursion_steps,-250, 250, 250, -250)
 <li>No colour so not exciting. Could add colour contrast or allow specification of colour themes when colour is available.</li>
 <li>Slow screen drawing when recursion level higher than 4.</li>
 <li>Clunky code.</li>
-<li>Artifacts in drawing because canvas dimensions are not multiples of 9.</li>
-<li><code>lines_to_svg.py</code> hangs occasionally, resulting in an empty or incomplete <code>carpet.svg</code> file.</li>
-<li>Others to come.</li>
 </ul>
 
 <h2>References</h2>
@@ -257,7 +393,7 @@ drawCarpet(recursion_steps,-250, 250, 250, -250)
 
 <hr />
 
-<p>Last Update: 2017 March 19 at 08:50:57 PDT</p>
+<p>Last Update: 2017 March 22 at 06:14:41 PDT</p>
 
 
 
