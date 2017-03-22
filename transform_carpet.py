@@ -2,11 +2,12 @@
 source
 	Modified from rings.py
 purpose
-	Read a from stdin: a shape consisting of a list of lines.
+	Read a file from stdin: a shape consisting of a list of lines.
 	Write to stdout a variety of copies of a Sierpinski Carpet.
-	Each carpet consists of the lines in the original carpet arranged in tiles, possibly rotated, around the origin.
+	Each carpet consists of the lines in the original carpet arranged
+	in tiles, possibly rotated, around the origin.
 preconditions
-	stdin contains a legal line file
+	stdin contains a legal line file with colour
 '''
 
 import sys
@@ -40,6 +41,9 @@ def draw_tile(lines, delta_x, delta_y, rotation, scale):
 		line_object.translate(delta_x, delta_y)
 		
 		print 'line', line_object, colour
+		
+		writeString = 'line ' + str(line_object) + '\n'
+		f_nocolour.write( writeString )
 
 '''
 purpose
@@ -52,11 +56,11 @@ preconditions
 def load_line_file(file_object):
 	line_objects = [ ]
 	for line in file_object:
-		# Convert text line to a list with lines coordinates and colour
+		# Convert text line to a list with line coordinates and colour
 		line_object = line.split()
-		this_line = [ float(line_object[1]), float(line_object[2]), \
+		this_line_list = [ float(line_object[1]), float(line_object[2]), \
 		float(line_object[3]), float(line_object[4]), str(line_object[5]) ]
-		line_objects.append(this_line)
+		line_objects.append(this_line_list)
 
 	return line_objects
 
@@ -80,6 +84,8 @@ angle = math.pi/4
 scale = 1 / ( abs(math.sin(angle)) + abs(math.cos(angle)) )
 
 L = load_line_file(sys.stdin)
+
+f_nocolour = open('nocolour.txt', 'w')
 
 # ***** generate the rings
 # First tile is in middle, ie. original tile
@@ -125,3 +131,4 @@ tile_position = [
 for i in range(number_of_tiles):
 	draw_tile(L, tile_position[i][0], tile_position[i][1], tile_position[i][2], tile_position[i][3])
 
+f_nocolour.close
