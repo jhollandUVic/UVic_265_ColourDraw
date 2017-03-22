@@ -1,0 +1,63 @@
+#	265Draw: Sierpinski Carpet
+
+---
+##	Drawing
+*	Recursion hard-coded at moment but could be controlled by user input
+*	Tiling and rotation also hard-coded.
+*	Colour coming.
+
+*	Sierpinski Carpet With Four Levels of Recursion:
+
+![Carpet With Four Levels of Recursion](image/carpet4a.svg "28089 Lines")
+
+*	Tiled Sierpinski Carpets With Two Levels of Recursion:
+
+![Tiled Carpets With Two Levels of Recursion](image/carpet_2STa.svg "3945 Lines")
+
+##	Code:
+
+*	[`generate_carpet.py`](https://github.com/jhollandUVic/UVic_265_ColourDraw/blob/master/generate_carpet.py)
+	*	Based on `generate_tree.py`
+	*	Uses algorithm for generating Sierpinski Carpets found at [http://lodev.org/cgtutor/sierpinski.html](http://lodev.org/cgtutor/sierpinski.html)
+	*	Can make a Sierpinski Carpet accepting levels of recursion required.
+
+*	[`sierpinski.sh`](https://github.com/jhollandUVic/UVic_265_ColourDraw/blob/master/sierpinksi.sh)
+	*	Bash Script to exercise code developed to build carpets.
+
+*	[`transform_carpet.py`](https://github.com/jhollandUVic/UVic_265_ColourDraw/blob/master/transform_carpet.py)
+	* Based on `rings.py`
+	*	Modifies an existing Sierpinski Carpet, by rotating, scaling, translating, and cloning.
+
+*	[`rotate_scale_translate.py`](https://github.com/jhollandUVic/UVic_265_ColourDraw/blob/master/rotate_scale_translate.py)
+	*	Existing code modified to know about and pass on lines augmented with colour.
+	
+*	[`Line_Point.py`](https://github.com/jhollandUVic/UVic_265_ColourDraw/blob/master/Line_Point.py)
+	*	Classes for lines and points, as supplied with assignment.
+
+##	Usage
+* Create a Recursive Sierpinski Carpet with 2 Levels
+
+	`python generate_carpet.py 2 > carpet_2.txt`
+
+* Scale carpet lines file down to fit in central third of canvas
+
+	`python rotate_scale_translate.py -f .3333 < carpet_2.txt > carpet_2S.txt`
+
+* Build some tile patterns from scaled file
+
+	`python transform_carpet.py < carpet_2S.txt > carpet_2ST.txt`
+
+##	Bugs
+*	No colour so not exciting. Could add colour contrast or allow specification of colour themes when colour is available.
+*	Slow screen drawing when recursion level higher than 4.
+*	Clunky code.
+
+##	References
+*	[Sierpinski Fractals](http://lodev.org/cgtutor/sierpinski.html)
+*	[SVG Tutorial](https://www.w3schools.com/graphics/svg_intro.asp)
+
+##	Document Notes
+*	This document built in [BBEdit](http://www.barebones.com/products/bbedit/) in [Markdown](http://daringfireball.net/projects/markdown/) format, converted to HTML with the [Markdown Text-to-HTML filter](http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip), then inserted into a CSS wrapper.
+
+---
+Last Update: 2017 March 22 at 06:14:41 PDT
