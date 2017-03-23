@@ -12,11 +12,11 @@ if ! [[ $1 =~ $re ]] ; then
 fi
 
 if [[ $2 == cross ]] ; then
-	pattern == $2
+	pattern=$2
 elif [[ $2 == diagonal ]] ; then
-	pattern == $2
+	pattern=$2
 elif [[ $2 == rotate ]] ; then
-	pattern == $2
+	pattern=$2
 else 
 	echo "$0: usage: sierpinski pattern '$2' not valid"
 	exit 1
@@ -49,7 +49,7 @@ eval "${CMD}"
 echo	"*"
 echo	"* Build some tile patterns from scaled file"
 CMD="python transform_carpet.py $pattern < carpet_${recursions}S.txt > carpet_${recursions}ST.txt"
-echo "${CMD}"
+echo "    ${CMD}"
 eval "${CMD}"
 #	echo	"*"
 #	echo	"Create black and white svg file"
