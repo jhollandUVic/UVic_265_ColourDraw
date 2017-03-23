@@ -114,7 +114,11 @@ def parse_line(line):
 		x = re.compile('$')
 		n = x.match(line, offset)
 		if n:
-			L.append(str(m.group(0)))
+			colour = str(m.group(0))
+			if colour in L_css_colours:
+				L.append(colour)
+			else:
+				L.append('Black')
 			return L
 		else:
 			return offset
@@ -158,6 +162,25 @@ def process_lines_file(lines_file):
 		
 
 		print generate_svg_line(x0, y0, x1, y1, colour)
+
+def load_line_file(file_object):
+	line_objects = [ ]
+	for line in file_object:
+		if line[-2:] == '\r\n': # Windows
+			line = line[:-2] # strip carriage return and newline
+		elif line[-1] == '\n': # Linux
+			line = line[:-1] # strip newline
+		line_object = line
+		line_objects.append(line_object)
+
+	return line_objects
+	
+# Load valid css colours into list
+
+fh_css_colours = open('css_colours.txt', 'r')
+L_css_colours = load_line_file(fh_css_colours)
+fh_css_colours.close
+#	print >> sys.stderr, "css_colours: Length of List =", len(L_css_colours), " First: ", L_css_colours[0], " Last: ", L_css_colours[-1]
 
 # ***** generate and print header and bounding box
 print generate_svg_header(CANVAS_WIDTH, CANVAS_HEIGHT)
