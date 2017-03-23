@@ -5,7 +5,7 @@
 
 *	Sierpinski Carpet With Four Levels of Recursion:
 
-![Carpet With Four Levels of Recursion](image/carpet4.svg "28089 Lines")
+![Carpet With Four Levels of Recursion](image/carpet_4.svg "28089 Lines")
 
 *	Tiled Sierpinski Carpets With Two Levels of Recursion:
 
@@ -69,4 +69,4 @@
 *	This document built in [BBEdit](http://www.barebones.com/products/bbedit/) in [Markdown](http://daringfireball.net/projects/markdown/) format, converted to HTML with the [Markdown Text-to-HTML filter](http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip), then inserted into a CSS wrapper.
 
 ---
-Last Update: 2017 March 23 at 11:30:17 PDT
+Last Update: 2017 March 23 at 11:46:38 PDT
