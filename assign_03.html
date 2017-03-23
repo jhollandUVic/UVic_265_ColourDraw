@@ -123,10 +123,7 @@
 <h2>Drawing</h2>
 
 <ul>
-<li>Recursion hard-coded at moment but could be controlled by user input</li>
-<li>Tiling and rotation also hard-coded.</li>
-<li><p>Colour coming.</p></li>
-<li><p>Sierpinski Carpet With Four Levels of Recursion:</p></li>
+<li>Sierpinski Carpet With Four Levels of Recursion:</li>
 </ul>
 
 <p><img src="image/carpet4.svg" alt="Carpet With Four Levels of Recursion" title="28089 Lines" /></p>
@@ -173,21 +170,44 @@
 <h2>Usage</h2>
 
 <ul>
+<li><p>Script to generate Sierpinski Carpets</p>
+
+<ul>
+<li><p><code>sh sierpinski.sh recursion pattern</code></p>
+
+<ul>
+<li>Where recursion is a number indicating level of recursion in the carpet.
+<ul>
+<li>A number greater than 4 means a slow draw and more detail than visible in the canvas.</li>
+</ul></li>
+<li>Where pattern is one of : cross, diagonal, rotation.</li>
+</ul></li>
+</ul></li>
 <li><p>Create a Recursive Sierpinski Carpet with 2 Levels</p>
 
-<p><code>python generate_carpet.py 2 &gt; carpet_2.txt</code></p></li>
+<ul>
+<li><p><code>python generate_carpet.py 2</code>recursion level <code>&gt; carpet_2.txt</code></p>
+
+<ul>
+<li>Replace recursion level with a number indicating levels of recursion in the carpet</li>
+<li>A number greater than 4 means a slow draw and more detail than visible in the canvas.</li>
+</ul></li>
+</ul></li>
 <li><p>Scale carpet lines file down to fit in central third of canvas</p>
 
 <p><code>python rotate_scale_translate.py -f .3333 &lt; carpet_2.txt &gt; carpet_2S.txt</code></p></li>
 <li><p>Build some tile patterns from scaled file</p>
 
-<p><code>python transform_carpet.py &lt; carpet_2S.txt &gt; carpet_2ST.txt</code></p></li>
+<p><code>python transform_carpet.py</code> pattern <code>&lt; carpet_2S.txt &gt; carpet_2ST.txt</code></p>
+
+<ul>
+<li>Where pattern is one of: cross, diagonal, rotation.</li>
+</ul></li>
 </ul>
 
 <h2>Bugs</h2>
 
 <ul>
-<li>No colour so not exciting. Could add colour contrast or allow specification of colour themes when colour is available.</li>
 <li>Slow screen drawing when recursion level higher than 4.</li>
 <li>Clunky code.</li>
 </ul>
@@ -207,7 +227,7 @@
 
 <hr />
 
-<p>Last Update: 2017 March 22 at 10:49:41 PDT</p>
+<p>Last Update: 2017 March 23 at 11:30:17 PDT</p>
 
 
 
