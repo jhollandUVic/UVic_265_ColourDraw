@@ -1,13 +1,24 @@
 #!/bin/bash
 
-if [ $# -ne 1 ]; then
-	echo "$0: usage: sierpinski recursions"
+if [ $# -ne 2 ]; then
+	echo "$0: usage: sierpinski recursions patterns"
 	exit 1
 fi
 
 re='^[0-9]+$'
 if ! [[ $1 =~ $re ]] ; then
 	echo "$0: usage: sierpinski recursions '$1' not numeric"
+	exit 1
+fi
+
+if [[ $2 == cross ]] ; then
+	pattern == $2
+elif [[ $2 == diagonal ]] ; then
+	pattern == $2
+elif [[ $2 == rotate ]] ; then
+	pattern == $2
+else 
+	echo "$0: usage: sierpinski pattern '$2' not valid"
 	exit 1
 fi
 
@@ -37,7 +48,7 @@ echo "*   ${CMD}"
 eval "${CMD}"
 echo	"*"
 echo	"* Build some tile patterns from scaled file"
-CMD="python transform_carpet.py < carpet_${recursions}S.txt > carpet_${recursions}ST.txt"
+CMD="python transform_carpet.py $pattern < carpet_${recursions}S.txt > carpet_${recursions}ST.txt"
 echo "${CMD}"
 eval "${CMD}"
 #	echo	"*"
