@@ -66,19 +66,23 @@ def load_line_file(file_object):
 
 # ***** process command line arguments
 
-# if len(sys.argv) != 2:
-# 	print >> sys.stderr, 'Syntax: ' + sys.argv[0] + ' number_of_rings'
-# 	sys.exit(1)
-# try:
-# 	number_of_rings = int(sys.argv[1])
-# except ValueError:
-# 	print >> sys.stderr, 'Syntax: ' + sys.argv[0] + ' number_of_rings'
-# 	sys.exit(2)
-# if number_of_rings < 1 or number_of_rings > 5:
-# 	print >> sys.stderr, 'Syntax: ' + sys.argv[0] + ' number_of_rings'
-# 	sys.exit(3)
+L_patterns = ['cross', 'diagonal', 'rotate']
+
+if len(sys.argv) != 2:
+	print >> sys.stderr, 'Syntax: ' + sys.argv[0] + ' pattern required'
+	sys.exit(1)
+try:
+	pattern = str(sys.argv[1])
+except ValueError:
+	print >> sys.stderr, 'Syntax: ' + sys.argv[0] + ' pattern'
+	sys.exit(2)
+if pattern not in L_patterns:
+	print >> sys.stderr, 'Syntax: ' + sys.argv[0] + ' pattern ' + sys.argv[1] + ' unknown'
+	sys.exit(3)
+	
 number_of_tiles = 9
 angle = math.pi/4
+
 #	Calc height of bounding box of rotated square then invert
 #	for amount to scale down to fit in space.
 scale = 1 / ( abs(math.sin(angle)) + abs(math.cos(angle)) )
@@ -87,46 +91,51 @@ L = load_line_file(sys.stdin)
 
 f_nocolour = open('nocolour.txt', 'w')
 
-# ***** generate the rings
+# ***** generate the tiles
 # First tile is in middle, ie. original tile
 # Second Tile is above the first
 # The succeeding tiles are positioned counterclockwise around original
 # delta-x and delta-y relative to origin: center of canvas.
-tile_position = [
-#	delta-x, delta-y, rotation, scale
-#	Angle and Scale setting for "Up, Down, Across" rotated pattern
-	[+0.0,		+0.0,	0.0, 1.0],
-	[0.0,		+166.0,	angle, scale],
-	[-166.0,	+166.0,	0.0, 1.0],
-	[-166.0,	0.0,	angle, scale],
-	[-166.0,	-166.0,	0.0, 1.0],
-	[0.0,		-166.0,	angle, scale],
-	[+166.0,	-166.0,	0.0, 1.0],
-	[+166.0,	0.0,	angle, scale],
-	[+166.0,	+166.0,	0.0, 1.0],
-#
+if pattern == L_patterns[0]:
+	tile_position = [
+	#	delta-x, delta-y, rotation, scale
+	#	Angle and Scale setting for "Up, Down, Across" rotated pattern
+		[+0.0,		+0.0,	0.0, 1.0],
+		[0.0,		+166.0,	angle, scale],
+		[-166.0,	+166.0,	0.0, 1.0],
+		[-166.0,	0.0,	angle, scale],
+		[-166.0,	-166.0,	0.0, 1.0],
+		[0.0,		-166.0,	angle, scale],
+		[+166.0,	-166.0,	0.0, 1.0],
+		[+166.0,	0.0,	angle, scale],
+		[+166.0,	+166.0,	0.0, 1.0],
+	]
+#	Diagonally Rotated
+if pattern == L_patterns[1]:
+	tile_position = [
+		[+0.0,		+0.0,	angle, scale],
+		[0.0,		+166.0,	0.0, 1.0],
+		[-166.0,	+166.0,	angle, scale],
+		[-166.0,	0.0,	0.0, 1.0],
+		[-166.0,	-166.0,	angle, scale],
+		[0.0,		-166.0,	0.0, 1.0],
+		[+166.0,	-166.0,	angle, scale],
+		[+166.0,	0.0,	0.0, 1.0],
+		[+166.0,	+166.0,	angle, scale],
+	]
 #	All Rotated Except for Center
-# 	[+0.0,		+0.0,	0.0, 1.0],
-# 	[0.0,		+166.0,	angle, scale],
-# 	[-166.0,	+166.0,	angle, scale],
-# 	[-166.0,	0.0,	angle, scale],
-# 	[-166.0,	-166.0,	angle, scale],
-# 	[0.0,		-166.0,	angle, scale],
-# 	[+166.0,	-166.0,	angle, scale],
-# 	[+166.0,	0.0,	angle, scale],
-# 	[+166.0,	+166.0,	angle, scale],
-#
-#	Diagonally Rotated Except for Center
-# 	[+0.0,		+0.0,	0.0, 1.0],
-# 	[0.0,		+166.0,	0.0, 1.0],
-# 	[-166.0,	+166.0,	angle, scale],
-# 	[-166.0,	0.0,	0.0, 1.0],
-# 	[-166.0,	-166.0,	angle, scale],
-# 	[0.0,		-166.0,	0.0, 1.0],
-# 	[+166.0,	-166.0,	angle, scale],
-# 	[+166.0,	0.0,	0.0, 1.0],
-# 	[+166.0,	+166.0,	angle, scale],
-]
+if pattern == L_patterns[2]:
+	tile_position = [
+		[+0.0,		+0.0,	0.0, 1.0],
+		[0.0,		+166.0,	angle, scale],
+		[-166.0,	+166.0,	angle, scale],
+		[-166.0,	0.0,	angle, scale],
+		[-166.0,	-166.0,	angle, scale],
+		[0.0,		-166.0,	angle, scale],
+		[+166.0,	-166.0,	angle, scale],
+		[+166.0,	0.0,	angle, scale],
+		[+166.0,	+166.0,	angle, scale],
+	]
 #	Draw a tile using tile_position which specifies delta-x, delta-y, scale factor, and angle of rotation.
 for i in range(number_of_tiles):
 	draw_tile(L, tile_position[i][0], tile_position[i][1], tile_position[i][2], tile_position[i][3])
