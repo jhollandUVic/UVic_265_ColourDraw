@@ -44,7 +44,7 @@ preconditions
 '''
 def generate_svg_line(x0, y0, x1, y1, colour):
 	# SVG line with placeholders for x0, y0, x0, y0, colour
-	SVG_LINE = '<line x1="$x0" y1="$y0" x2="$x1" y2="$y1" stroke ="$black" />'
+	SVG_LINE = '<line x1="$x0" y1="$y0" x2="$x1" y2="$y1" style="stroke:$black" />'
 	s = SVG_LINE.replace('$x0', str(x0))
 	s = s.replace('$y0', str(y0))
 	s = s.replace('$x1', str(x1))
