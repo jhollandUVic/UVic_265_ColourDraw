@@ -1,6 +1,6 @@
 import sys
 import math
-import Line_Point
+import Line_Point_colour
 
 '''
 purpose
@@ -15,30 +15,30 @@ StepColour = ['Red', 'Blue', 'Green', 'Red', 'Orange', 'Lime', 'Maroon']
 	
 def drawRect(x1, y1, x2, y2, colour):
 	# Draw boundaries of square
-	point0 = Line_Point.Point(x1, y1)
-	point1 = Line_Point.Point(x2,y1)
-	line = Line_Point.Line(point0, point1)
+	point0 = Line_Point_colour.Point(x1, y1)
+	point1 = Line_Point_colour.Point(x2,y1)
+	line = Line_Point_colour.Line(point0, point1)
 	print 'line', line, colour
-	point0 = Line_Point.Point(x2,y1)
-	point1 = Line_Point.Point(x2, y2)
-	line = Line_Point.Line(point0, point1)
+	point0 = Line_Point_colour.Point(x2,y1)
+	point1 = Line_Point_colour.Point(x2, y2)
+	line = Line_Point_colour.Line(point0, point1)
 	print 'line', line, colour
-	point0 = Line_Point.Point(x2, y2)
-	point1 = Line_Point.Point(x1, y2)
-	line = Line_Point.Line(point0, point1)
+	point0 = Line_Point_colour.Point(x2, y2)
+	point1 = Line_Point_colour.Point(x1, y2)
+	line = Line_Point_colour.Line(point0, point1)
 	print 'line', line, colour
-	point0 = Line_Point.Point(x1, y2)
-	point1 = Line_Point.Point(x1, y1)
-	line = Line_Point.Line(point0, point1)
+	point0 = Line_Point_colour.Point(x1, y2)
+	point1 = Line_Point_colour.Point(x1, y1)
+	line = Line_Point_colour.Line(point0, point1)
 	print 'line', line, colour
 	# Draw cross on square
-	point0 = Line_Point.Point(x1, y2)
-	point1 = Line_Point.Point(x2, y1)
-	line = Line_Point.Line(point0, point1)
+	point0 = Line_Point_colour.Point(x1, y2)
+	point1 = Line_Point_colour.Point(x2, y1)
+	line = Line_Point_colour.Line(point0, point1)
 	print 'line', line, colour
-	point0 = Line_Point.Point(x1, y1)
-	point1 = Line_Point.Point(x2, y2)
-	line = Line_Point.Line(point0, point1)
+	point0 = Line_Point_colour.Point(x1, y1)
+	point1 = Line_Point_colour.Point(x2, y2)
+	line = Line_Point_colour.Line(point0, point1)
 	print 'line', line, colour
 	
 def drawCarpet(this_step, x1, y1, x2, y2, colour):

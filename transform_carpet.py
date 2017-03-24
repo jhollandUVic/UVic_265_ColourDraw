@@ -13,7 +13,7 @@ preconditions
 import sys
 import copy
 import math
-import Line_Point
+import Line_Point_colour
 
 '''
 purpose
@@ -30,9 +30,9 @@ def draw_tile(lines, delta_x, delta_y, rotation, scale):
 
 	for line in new_lines:
 		# line is a list with the four line coordinates plus a colour
-		point0 = Line_Point.Point(float(line[0]), float(line[1]))
-		point1 = Line_Point.Point(float(line[2]), float(line[3]))
-		line_object = Line_Point.Line(point0, point1)
+		point0 = Line_Point_colour.Point(float(line[0]), float(line[1]))
+		point1 = Line_Point_colour.Point(float(line[2]), float(line[3]))
+		line_object = Line_Point_colour.Line(point0, point1)
 		colour = str(line[4])
 		
 		# Apply transformations

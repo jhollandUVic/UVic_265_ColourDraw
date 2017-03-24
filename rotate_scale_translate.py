@@ -1,5 +1,5 @@
 import sys
-import Line_Point
+import Line_Point_colour
 
 '''
 purpose
@@ -95,10 +95,10 @@ def process_lines_file(file_object, options):
 	for line in file_object:
 		# convert L to a Line object
 		L = line.split()
-		point0 = Line_Point.Point(float(L[1]), float(L[2]))
-		point1 = Line_Point.Point(float(L[3]), float(L[4]))
+		point0 = Line_Point_colour.Point(float(L[1]), float(L[2]))
+		point1 = Line_Point_colour.Point(float(L[3]), float(L[4]))
 		colour = str(L[5])
-		line = Line_Point.Line(point0, point1)
+		line = Line_Point_colour.Line(point0, point1)
 
 		# rotate, scale, translate and write line count times
 		for i in range(options['-n']):
