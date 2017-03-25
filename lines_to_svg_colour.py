@@ -1,3 +1,4 @@
+import pdb
 import sys
 import re
 
@@ -65,7 +66,8 @@ def generate_svg_footer():
 purpose
 	parse line
 	if legal
-		return [x0, y0, x1, y1] as ints
+		return [x0, y0, x1, y1, colour]
+		with x0, y0, x1, y1 as ints and colour as a string
 	else
 		return the index in line of the leftmost error
 preconditions
@@ -84,7 +86,7 @@ def parse_line(line):
 	# ***** parse x0 y0 x1 y1 colour
 	L = [ ]
 	x = re.compile('([+-]?\d+)(?: +|$)')
-	#if there is no token after y1, check colour
+	# if there is no token after y1, check colour
 	while len(L) < 4:
 		# *** match
 		m = x.match(line, offset)
@@ -107,7 +109,7 @@ def parse_line(line):
 			return offset
 
 	# ***** check for non-space after last correct token, if empty: add black
-	x = re.compile('[A-Za-z]+ *')
+	x = re.compile('[A-Za-z]+ *') # One or more words followed by zero or more spaces
 	m = x.match(line, offset)
 	if m:
 		offset = m.end()
@@ -126,7 +128,7 @@ def parse_line(line):
 	x = re.compile('$')
 	m = x.match(line,offset)
 	if m:
-		L.append('Black')
+		L.append('Blub')
 		return L
 	else:
 		return offset
@@ -163,6 +165,8 @@ def process_lines_file(lines_file):
 
 		print generate_svg_line(x0, y0, x1, y1, colour)
 
+#	A mechanism to load lines of a file into a list
+#	This is used to create a list of the 148 css colours supplied
 def load_line_file(file_object):
 	line_objects = [ ]
 	for line in file_object:
@@ -176,11 +180,12 @@ def load_line_file(file_object):
 	return line_objects
 	
 # Load valid css colours into list
-
 fh_css_colours = open('css_colours.txt', 'r')
 L_css_colours = load_line_file(fh_css_colours)
 fh_css_colours.close
-#	print >> sys.stderr, "css_colours: Length of List =", len(L_css_colours), " First: ", L_css_colours[0], " Last: ", L_css_colours[-1]
+
+#	print >> sys.stderr, "css_colours: Length of List =", len(L_css_colours), \
+#						" First: ", L_css_colours[0], " Last: ", L_css_colours[-1]
 
 # ***** generate and print header and bounding box
 print generate_svg_header(CANVAS_WIDTH, CANVAS_HEIGHT)
