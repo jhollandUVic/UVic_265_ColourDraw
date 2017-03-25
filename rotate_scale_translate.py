@@ -80,13 +80,12 @@ def load_line_file(file_object):
 		# Convert text line to a list with line coordinates and colour
 		line_object = line.split()
 		this_line_list = [ float(line_object[1]), float(line_object[2]), \
-		float(line_object[3]), float(line_object[4]), str(line_object[5]) ]
+							float(line_object[3]), float(line_object[4]), \
+							str(line_object[5]) ]
 		line_objects.append(this_line_list)
 
 	return line_objects
-	
-	
-	
+		
 
 # ***** apply rotate, scale, translate
 # ***** Mod: 2017 Mar 21
@@ -98,14 +97,14 @@ def process_lines_file(file_object, options):
 		point0 = Line_Point_colour.Point(float(L[1]), float(L[2]))
 		point1 = Line_Point_colour.Point(float(L[3]), float(L[4]))
 		colour = str(L[5])
-		line = Line_Point_colour.Line(point0, point1)
+		line = Line_Point_colour.Line(point0, point1, colour)
 
 		# rotate, scale, translate and write line count times
 		for i in range(options['-n']):
 			line.rotate(options['-a'])
 			line.scale(options['-f'])
 			line.translate(options['-x'], options['-y'])
-			print 'line', line, colour
+			print 'line', line
 
 
 # *** handle command-line arguments

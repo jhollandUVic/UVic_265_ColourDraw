@@ -11,35 +11,35 @@ preconditions
 reference
 	See <http://lodev.org/cgtutor/sierpinski.html>
 '''
-StepColour = ['Red', 'Blue', 'Green', 'Red', 'Orange', 'Lime', 'Maroon']
+StepColour = ['Maroon', 'Blue', 'Green', 'Red', 'Lime', 'Orange', 'Red']
 	
 def drawRect(x1, y1, x2, y2, colour):
 	# Draw boundaries of square
 	point0 = Line_Point_colour.Point(x1, y1)
 	point1 = Line_Point_colour.Point(x2,y1)
-	line = Line_Point_colour.Line(point0, point1)
-	print 'line', line, colour
+	line = Line_Point_colour.Line(point0, point1, colour)
+	print 'line', line
 	point0 = Line_Point_colour.Point(x2,y1)
 	point1 = Line_Point_colour.Point(x2, y2)
-	line = Line_Point_colour.Line(point0, point1)
-	print 'line', line, colour
+	line = Line_Point_colour.Line(point0, point1, colour)
+	print 'line', line
 	point0 = Line_Point_colour.Point(x2, y2)
 	point1 = Line_Point_colour.Point(x1, y2)
-	line = Line_Point_colour.Line(point0, point1)
-	print 'line', line, colour
+	line = Line_Point_colour.Line(point0, point1, colour)
+	print 'line', line
 	point0 = Line_Point_colour.Point(x1, y2)
 	point1 = Line_Point_colour.Point(x1, y1)
-	line = Line_Point_colour.Line(point0, point1)
-	print 'line', line, colour
+	line = Line_Point_colour.Line(point0, point1, colour)
+	print 'line', line
 	# Draw cross on square
 	point0 = Line_Point_colour.Point(x1, y2)
 	point1 = Line_Point_colour.Point(x2, y1)
-	line = Line_Point_colour.Line(point0, point1)
-	print 'line', line, colour
+	line = Line_Point_colour.Line(point0, point1, colour)
+	print 'line', line
 	point0 = Line_Point_colour.Point(x1, y1)
 	point1 = Line_Point_colour.Point(x2, y2)
-	line = Line_Point_colour.Line(point0, point1)
-	print 'line', line, colour
+	line = Line_Point_colour.Line(point0, point1, colour)
+	print 'line', line
 	
 def drawCarpet(this_step, x1, y1, x2, y2, colour):
 	# Determine new rectangle 1/3rd the size in center of given coordinates
@@ -75,6 +75,7 @@ except ValueError:
 if recursion_steps >= 9:
 	print >> sys.stderr, 'Values: ' + sys.argv[0] + 'recursion_steps'
 	sys.exit(3)
+	
 # Dimensions chosen so side of carpet divisible by 3.
 drawCarpet(recursion_steps,-249, 249, 249, -249, StepColour[recursion_steps])
 
