@@ -63,7 +63,7 @@ def load_line_file(file_object):
 
 # ***** process command line arguments
 
-L_patterns = ['cross', 'diagonal', 'rotate']
+L_patterns = ['carpet', 'cross', 'diagonal', 'rotate']
 
 if len(sys.argv) != 2:
 	print >> sys.stderr, 'Syntax: ' + sys.argv[0] + ' pattern required'
@@ -92,22 +92,36 @@ L = load_line_file(sys.stdin)
 # The succeeding tiles are positioned counterclockwise around original
 # delta-x and delta-y relative to origin: center of canvas.
 #
-#	Angle and Scale setting for "Up, Down, Across" rotated pattern
 if pattern == L_patterns[0]:
+#	No rotation or scale for complete carpet
 	tile_position = [
 	#	delta-x, delta-y, rotation, scale
-		[+0.0,		+0.0,	0.0, 1.0],
-		[0.0,		+166.0,	angle, scale],
-		[-166.0,	+166.0,	0.0, 1.0],
-		[-166.0,	0.0,	angle, scale],
-		[-166.0,	-166.0,	0.0, 1.0],
-		[0.0,		-166.0,	angle, scale],
-		[+166.0,	-166.0,	0.0, 1.0],
-		[+166.0,	0.0,	angle, scale],
-		[+166.0,	+166.0,	0.0, 1.0],
+		[+0.0,		+0.0,	0.0, 1.0],		# Center
+		[0.0,		+166.0,	angle*4, 1.0],	# Upper Center
+		[-166.0,	+166.0,	0.0, 1.0],		# Upper Left
+		[-166.0,	0.0,	angle*4, 1.0],	# Middle Left
+		[-166.0,	-166.0,	0.0, 1.0],		# Lower Left
+		[0.0,		-166.0,	angle*4, 1.0],	# Lower Center
+		[+166.0,	-166.0,	0.0, 1.0],		# Lower Right
+		[+166.0,	0.0,	angle*4, 1.0],	# Middle Right
+		[+166.0,	+166.0,	0.0, 1.0],		# Upper Right
 	]
-#	Diagonally Rotated
+#	Angle and Scale setting for "Up, Down, Across" rotated pattern
 if pattern == L_patterns[1]:
+	tile_position = [
+	#	delta-x, delta-y, rotation, scale
+		[+0.0,		+0.0,	0.0, 1.0], 			# Center
+		[0.0,		+166.0,	angle, scale], 		# Upper Center
+		[-166.0,	+166.0,	angle*4, 1.0], 		# Upper Left
+		[-166.0,	0.0,	angle*3, scale],	# Middle Left
+		[-166.0,	-166.0,	angle*4, 1.0],		# Lower Left
+		[0.0,		-166.0,	angle*5, scale],	# Lower Center
+		[+166.0,	-166.0,	angle*4, 1.0],		# Lower Right
+		[+166.0,	0.0,	angle*7, scale],	# Middle Right
+		[+166.0,	+166.0,	angle*4, 1.0],		# Upper Right
+	]
+#	Tiles on Diagonal Rotated
+if pattern == L_patterns[2]:
 	tile_position = [
 		[+0.0,		+0.0,	angle, scale],
 		[0.0,		+166.0,	0.0, 1.0],
@@ -120,17 +134,17 @@ if pattern == L_patterns[1]:
 		[+166.0,	+166.0,	angle, scale],
 	]
 #	All Rotated Except for Center
-if pattern == L_patterns[2]:
+if pattern == L_patterns[3]:
 	tile_position = [
 		[+0.0,		+0.0,	0.0, 1.0],
 		[0.0,		+166.0,	angle, scale],
-		[-166.0,	+166.0,	angle, scale],
-		[-166.0,	0.0,	angle, scale],
-		[-166.0,	-166.0,	angle, scale],
+		[-166.0,	+166.0,	angle*3, scale],
+		[-166.0,	0.0,	angle*5, scale],
+		[-166.0,	-166.0,	angle*7, scale],
 		[0.0,		-166.0,	angle, scale],
-		[+166.0,	-166.0,	angle, scale],
-		[+166.0,	0.0,	angle, scale],
-		[+166.0,	+166.0,	angle, scale],
+		[+166.0,	-166.0,	angle*3, scale],
+		[+166.0,	0.0,	angle*5, scale],
+		[+166.0,	+166.0,	angle*7, scale],
 	]
 #	Draw a tile using tile_position which specifies delta-x, delta-y, scale factor, and angle of rotation.
 for i in range(number_of_tiles):
