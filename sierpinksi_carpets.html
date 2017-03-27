@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Sierpinski Carpets Users Manual</title>
+	<meta name="generator" content="BBEdit 11.6" />
+	<style type="text/css">
+
+		body	{	color: navy; 
+						background-color: gray;
+					 	font-family: Helvetica, Univers, sans-serif;
+					}
+		code {color: #006600; font-family: "Lucida Console", Courier, "Andale Mono", monospace}
+		h1 {color: navy; font-style: oblique; text-shadow: 2px 2px 2px lightgray}
+		h2 {color: navy; font-style: italic; text-shadow: 1px 1px 1px lightgray}
+		h3 {color: navy; font-style: normal; text-shadow: 1px 1px 1px lightgray}
+		h4 {color: navy; font-style: normal; text-shadow: 1px 1px 1px lightgray}
+
+		a:link {color: mediumblue; text-decoration: none}
+		a:visited {color: purple; text-decoration: none}
+		a:hover {color: red; text-decoration: underline}
+		a:active {color: black; text-decoration: none}
+
+	 dl {
+			border: 3px solid lightgray;
+			padding: 0.5em;
+		}
+		dt {
+			font-weight: bold;
+			text-decoration: underline;
+		}
+		dd {
+			margin: 0;
+			padding: 0 0 0.5em 0;
+		}
+
+	pre, code, tt {
+		font-size: 16px;
+		font-family: Consolas, "Liberation Mono", Courier, monospace;
+	}
+
+	code, tt {
+		margin: 0 0px;
+		padding: 0px 0px;
+		white-space: wrap;
+		border: 1px solid #eaeaea;
+		background-color: #f8f8f8;
+		border-radius: 3px;
+	}
+
+	pre>code {
+		margin: 0;
+		padding: 0;
+		white-space: pre;
+		border: none;
+		background: transparent;
+	}
+
+	pre {
+		background-color: #f8f8f8;
+		border: 1px solid #ccc;
+		font-size: 16px;
+		line-height: 20px;
+		overflow: auto;
+		padding: 6px 10px;
+		border-radius: 3px;
+	}
+
+	pre code, pre tt {
+		background-color: transparent;
+		border: none;
+	}
+
+	table.main {	width: 600px;
+					padding: 1px;
+					spacing: 2px;
+					border: 2px dotted lightgray;
+					border-radius: 15px;
+					border-spacing: 8px;
+					margin-right: auto;
+					margin-left: auto;
+				}
+	table.data	{
+	background-color: lightgray;
+		width: 600px;
+					padding: 1px;
+					spacing: 2px;
+
+					margin-right: auto;
+					margin-left: auto;
+							}
+		th {background-color: white; color: navy}
+		tr.header {background-color: white}
+
+		td {	font_weight: bold;
+					color: navy;
+					background-color: white;
+					padding: 0px 10px;
+					border-radius: 10px
+				}
+		td.picture {background-color: white}
+
+		img {	display: block;
+					margin-right: auto;
+					margin-left: auto;
+					background-color: white; padding: 3px; border: 1px dotted navy;
+				}
+</style>
+
+</head>
+<body>
+<table class="main">
+<tr>
+<td>
+
+
+
+
+<h1>265Draw: Sierpinski Carpets Users Manual</h1>
+
+<hr />
+
+<h2>Application Concepts</h2>
+
+<ul>
+<li>A Sierpinski Carpet is a recursive fractal, where smaller copies of an original shape are drawn around the original, then even smaller copies are drawn around the copies, and this can be continued to an arbitrary level of recursion.</li>
+</ul>
+
+<h3>Example SVG Images Generated</h3>
+
+<ul>
+<li>Sierpinski Carpet With Three Levels of Recursion:</li>
+</ul>
+
+<p><img src="image/carpet_3.svg" alt="Carpet With Three Levels of Recursion" title="3513 Lines" /></p>
+
+<ul>
+<li>Tiled Sierpinski Carpets With Two Levels of Recursion:</li>
+</ul>
+
+<p><img src="image/carpet_2ST.svg" alt="Tiled Carpets With Two Levels of Recursion" title="3945 Lines" /></p>
+
+<h3>Recursion Levels</h3>
+
+<ul>
+<li>A recursion level from 0 to 4 is supported.</li>
+<li>A recursion level of 0 will result in one square in the center of the canvas. Tiling will place eight smaller squares around the original.</li>
+<li>A recursion level of 4 will make a very big SVG file and, at the resolution of the canvas, results in very small squares at the smallest level. There is no point in a higher recursion level because detail at the smallest level will not be seen.</li>
+</ul>
+
+<h3>Tiling Variations</h3>
+
+<ul>
+<li><code>rotate</code>: The tiled example above shows a scaling of the original carpet to one third its size, then rotating, scaling, and translating carpet copies around the original.</li>
+<li><code>carpet</code>: another version is just translating and rotating copies without scaling.</li>
+<li><code>diagonal</code>: a third version only rotates copies on the diagonals.</li>
+<li><code>cross</code>: a fourth version only rotates copies up and down and across from the original.</li>
+</ul>
+
+<h3>Colour</h3>
+
+<ul>
+<li>Three colour themes are supported: <code>light</code>, <code>medium</code>, <code>dark</code>.</li>
+<li>The colours within each theme are chosen randomly meaning seeing the same colour combinations is rare to impossible.</li>
+</ul>
+
+<h2>Application Usage</h2>
+
+<ul>
+<li><p><code>sierpinski.sh</code> is the script which embodies the application built to create Sierpinski Carpets.</p>
+
+<ul>
+<li><p>This shows the form of the command-line invocation:</p>
+
+<p><code>bash sierpinski.sh recursion pattern colour-theme</code></p></li>
+<li><p>The application accepts three parameters:</p>
+
+<ul>
+<li><code>recursion</code>: an integer between 0 and 4.</li>
+<li><code>pattern</code>: a string defining the tiling pattern required.
+<ul>
+<li><code>carpet</code> will create smaller versions of the original carpet around the original.</li>
+<li><code>cross</code> will create rotated versions of the original carpet at &pi;/2 intervals around the original, starting above the original.</li>
+<li><code>diagonal</code> will place the rotated versions at &pi;/2 intervals starting at top left.</li>
+<li><code>rotate</code> will rotate all versions of the original.</li>
+</ul></li>
+<li><code>colour-theme</code>: a string defining the colours to be used to draw squares making up the carpet.
+<ul>
+<li><code>light</code>: Light colours (eg. <code>LightBlue</code>) are randomly chosen from <code>css_colours.txt</code> for the lines that make up a square in a carpet. The resulting carpets are displayed on a dark background.</li>
+<li><code>medium</code>: Random medium colours (eg. <code>MediumVioletRed</code>) are used for squares. A complementary background colour is used.</li>
+<li><code>dark</code>: Random colours with <code>Dark</code> in their name (eg. <code>DarkSeaGreen</code>) are used to colour squares. A contrasting background colour is used.</li>
+</ul></li>
+<li><p>Here is an example of a run of the application. The script echoes commands to show progress:</p>
+
+<pre><code>🌀 &gt; Home: bash sierpinski.sh 3 rotate light
+*
+* Create a Recursive Sierpinski Carpet with 3 Levels
+python generate_carpet.py 3 light &gt; carpet_3.txt
+*
+* Create colour svg file from base carpet
+python lines_to_svg_colour.py &lt; carpet_3.txt &gt; carpet_3.svg
+*
+* Change background colour in base carpet svg
+sed -i '' 's/none/MidnightBlue/g' carpet_3.svg
+*
+* Scale carpet lines down to fit in central ninth of canvas
+python rotate_scale_translate.py -f .3333 &lt; carpet_3.txt &gt; carpet_3S.txt
+*
+* Build tile patterns from scaled file
+python transform_carpet.py rotate &lt; carpet_3S.txt &gt; carpet_3ST.txt
+*
+*   Create colour svg file from tiled carpet
+python lines_to_svg_colour.py &lt; carpet_3ST.txt &gt; carpet_3ST.svg
+*
+* Change background colour in tiled carpet svg
+sed -i '' 's/none/MidnightBlue/g' carpet_3ST.svg
+</code></pre></li>
+<li><p>Two SVG files are created:</p>
+
+<ul>
+<li>A Sierpinski Carpet at the recursion level and with the colour theme requested.
+<ul>
+<li>The file name <code>carpet_</code> will be suffixed with the recursion level; eg. <code>carpet_3.svg</code></li>
+</ul></li>
+<li>A tiled Sierpinski Carpet with pattern and colour theme as requested.
+<ul>
+<li>The suffix of the file name with recursion level and <code>ST</code>, which stands for <code>scaled and transformed</code>. Eg. <code>carpet_3ST.svg</code>.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h2>Application Code:</h2>
+
+<ul>
+<li><p><a href="https://github.com/jhollandUVic/UVic_265_ColourDraw/blob/master/generate_carpet.py"><code>generate_carpet.py</code></a></p>
+
+<ul>
+<li>Based on <code>generate_tree.py</code></li>
+<li>Uses algorithm for generating Sierpinski Carpets found at <a href="http://lodev.org/cgtutor/sierpinski.html">http://lodev.org/cgtutor/sierpinski.html</a></li>
+<li>Can make a Sierpinski Carpet accepting levels of recursion required.</li>
+</ul></li>
+<li><p><a href="https://github.com/jhollandUVic/UVic_265_ColourDraw/blob/master/sierpinksi.sh"><code>sierpinski.sh</code></a></p>
+
+<ul>
+<li>Bash script to exercise code developed to build carpets.</li>
+</ul></li>
+<li><p><a href="https://github.com/jhollandUVic/UVic_265_ColourDraw/blob/master/transform_carpet.py"><code>transform_carpet.py</code></a></p>
+
+<ul>
+<li>Based on <code>rings.py</code></li>
+<li>Modifies an existing Sierpinski Carpet, by rotating, scaling, translating, and cloning.</li>
+</ul></li>
+<li><p><a href="https://github.com/jhollandUVic/UVic_265_ColourDraw/blob/master/rotate_scale_translate.py"><code>rotate_scale_translate.py</code></a></p>
+
+<ul>
+<li>Existing code modified to know about and pass on lines augmented with colour.</li>
+</ul></li>
+<li><p><a href="https://github.com/jhollandUVic/UVic_265_ColourDraw/blob/master/Line_Point.py"><code>Line_Point.py</code></a></p>
+
+<ul>
+<li>Classes for lines and points, as supplied with assignment.</li>
+</ul></li>
+</ul>
+
+<h2>Usage</h2>
+
+<ul>
+<li><p>Script to generate Sierpinski Carpets</p>
+
+<ul>
+<li><p><code>sh sierpinski.sh recursion pattern</code></p>
+
+<ul>
+<li>Where recursion is a number indicating level of recursion in the carpet.
+<ul>
+<li>A number greater than 4 means a slow draw and more detail than visible in the canvas.</li>
+</ul></li>
+<li>Where pattern is one of : cross, diagonal, rotation.</li>
+</ul></li>
+</ul></li>
+<li><p>Create a Recursive Sierpinski Carpet with 2 Levels</p>
+
+<ul>
+<li><p><code>python generate_carpet.py 2</code>recursion level <code>&gt; carpet_2.txt</code></p>
+
+<ul>
+<li>Replace recursion level with a number indicating levels of recursion in the carpet</li>
+<li>A number greater than 4 means a slow draw and more detail than visible in the canvas.</li>
+</ul></li>
+</ul></li>
+<li><p>Scale carpet lines file down to fit in central third of canvas</p>
+
+<p><code>python rotate_scale_translate.py -f .3333 &lt; carpet_2.txt &gt; carpet_2S.txt</code></p></li>
+<li><p>Build some tile patterns from scaled file</p>
+
+<p><code>python transform_carpet.py</code> pattern <code>&lt; carpet_2S.txt &gt; carpet_2ST.txt</code></p>
+
+<ul>
+<li>Where pattern is one of: cross, diagonal, rotation.</li>
+</ul></li>
+</ul>
+
+<h2>Bugs</h2>
+
+<ul>
+<li><p>Use of sed to replace <code>fill:none</code> in <code>SVG_BOUNDING_BOX</code> requires a different form on Mac and on Linux:</p>
+
+<ul>
+<li>On Mac OS 10.12.3: <code>sed -i '' 's/none/${background}/g' carpet_${recursions}ST.svg</code></li>
+<li>On Ubuntu 14.04.5: <code>sed -i 's/none/${background}/g' carpet_${recursions}ST.svg</code>
+<h2>References</h2></li>
+</ul></li>
+<li><p><a href="http://lodev.org/cgtutor/sierpinski.html">Sierpinski Fractals</a></p></li>
+<li><a href="https://www.w3schools.com/graphics/svg_intro.asp">SVG Tutorial</a></li>
+</ul>
+
+<h2>Document Notes</h2>
+
+<ul>
+<li>This document built in <a href="http://www.barebones.com/products/bbedit/">BBEdit</a> in <a href="http://daringfireball.net/projects/markdown/">Markdown</a> format, converted to HTML with the <a href="http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip">Markdown Text-to-HTML filter</a>, then inserted into a CSS wrapper.</li>
+</ul>
+
+<hr />
+
+<p>Last Update: 2017 March 26 at 20:05:27 PDT</p>
+
+
+
+
+
+
+
+
+
+
+</td>
+</tr>
+</table>
+</body>
+</html>
+
